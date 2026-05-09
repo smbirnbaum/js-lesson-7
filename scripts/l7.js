@@ -1,65 +1,69 @@
-const account = {
-    accountName: "Shawna",
-    balance: 1000,
+const word = document.getElementById("word");
+const text = document.getElementById("text");
+const scoreElement = document.getElementById("score");
+const timeElement = document.getElementById("time");
+const endGameContainer = document.getElementById("end-game-container");
 
-    getBalance: function () {
-        alert("Your balance is: " + this.balance + " kr");
-    },
+const words = [
+    "cat",
+    "pizza",
+    "javascript",
+    "computer",
+    "keyboard",
+    "school",
+    "flower",
+    "banana",
+    "goblin",
+    "coffee"
+];
 
-    deposit: function (amount) {
-        if (isNaN(amount) || amount <= 0) {
-            this.accountError();
-        } else {
-            this.balance = this.balance + amount;
-            alert("You deposited: " + amount + " kr");
-            this.getBalance();
-        }
-    },
+let randomWord;
+let score = 0;
+let time = 10;
 
-    withdrawal: function (amount) {
-        if (isNaN(amount) || amount <= 0 || amount > this.balance) {
-            this.accountError();
-        } else {
-            this.balance = this.balance - amount;
-            alert("You withdrew: " + amount + " kr");
-            this.getBalance();
-        }
-    },
+text.focus();
 
-    getAccountName: function () {
-        alert("Account holder: " + this.accountName);
-    },
+function addWordToDOM() {
+    randomWord = words[Math.floor(Math.random() * words.length)];
+    word.textContent = randomWord;
+}
 
-    accountError: function () {
-        alert("Something went wrong. Please enter a valid amount.");
-    }
-};
+function updateScore() {
+    score = score + 1;
+    scoreElement.textContent = score;
+}
 
-function atm() {
-    let choice = prompt(
-        "Choose an option:\n1. See balance\n2. Deposit money\n3. Withdraw money\n4. See account name\n5. Exit"
-    );
+function updateTime() {
+    time = time - 1;
+    timeElement.textContent = time;
 
-    if (choice === "1") {
-        account.getBalance();
-        atm();
-    } else if (choice === "2") {
-        let amount = Number(prompt("How much do you want to deposit?"));
-        account.deposit(amount);
-        atm();
-    } else if (choice === "3") {
-        let amount = Number(prompt("How much do you want to withdraw?"));
-        account.withdrawal(amount);
-        atm();
-    } else if (choice === "4") {
-        account.getAccountName();
-        atm();
-    } else if (choice === "5") {
-        alert("Goodbye!");
-    } else {
-        account.accountError();
-        atm();
+    if (time === 0) {
+        clearInterval(timeInterval);
+        gameOver();
     }
 }
 
-atm();
+function gameOver() {
+    endGameContainer.style.display = "flex";
+    endGameContainer.innerHTML = `
+        <h1>Game Over</h1>
+        <p>Your final score is ${score}</p>
+        <button onclick="location.reload()">Restart</button>
+    `;
+}
+
+text.addEventListener("input", function () {
+    const typedText = text.value;
+
+    if (typedText === randomWord) {
+        updateScore();
+        addWordToDOM();
+        time = time + 5;
+        timeElement.textContent = time;
+        text.value = "";
+    }
+});
+
+addWordToDOM();
+
+const timeInterval = setInterval(updateTime, 1000);
