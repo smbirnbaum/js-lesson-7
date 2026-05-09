@@ -7,11 +7,39 @@
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/index.css">
 
-
-    <title>Blabla</title>
+    <title>Typing Game</title>
 </head>
 
 <body>
+    <main class="container mt-5 game-wrapper">
+        <h1>Typing Game</h1>
+
+        <p class="lead">
+            Type the word shown below before the timer runs out.
+        </p>
+
+        <div class="game-box">
+            <p>Time left: <span id="time">10</span>s</p>
+            <p>Score: <span id="score">0</span></p>
+
+            <h2 id="word">word</h2>
+
+            <input 
+                id="text" 
+                class="form-control" 
+                type="text" 
+                placeholder="Type the word here"
+                autocomplete="off"
+            >
+        </div>
+
+        <div id="end-game-container" class="end-game-container">
+            <h2>Game Over</h2>
+            <p>Your final score is <span id="final-score">0</span>.</p>
+            <button id="restart-btn" class="btn btn-primary">Restart</button>
+        </div>
+    </main>
+
     <script src="scripts/l7.js"></script>
 </body>
 </html>
